@@ -1,8 +1,8 @@
 :root {
   color-scheme: dark;
   font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace;
-  --bg: #03071e;
-  --bg-alt: #0f172a;
+  --bg: #050505;
+  --bg-alt: #0f0f0f;
   --text: #f8fafc;
   --accent: #f48c06;
   --border: rgba(255,255,255,0.2);
@@ -16,7 +16,7 @@ html, body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  background: linear-gradient(180deg, #0b1120 0%, #03071e 100%);
+  background: linear-gradient(180deg, var(--bg-alt) 0%, var(--bg) 100%);
   color: var(--text);
 }
 
@@ -53,9 +53,9 @@ a.card {
   text-decoration: none;
   color: inherit;
   border: 1px solid var(--border);
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(0, 0, 0, 0.8);
   padding: 1.25rem;
-  border-radius: 0.75rem;
+  border-radius: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -74,7 +74,7 @@ a.card:hover {
 
 .card p {
   margin: 0;
-  color: #cbd5f5;
+  color: #d1d1d1;
   font-size: 0.9rem;
 }
 
@@ -88,9 +88,9 @@ a.card:hover {
 }
 
 section.article {
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(0, 0, 0, 0.85);
   padding: 1.5rem;
-  border-radius: 0.75rem;
+  border-radius: 0;
   border: 1px solid var(--border);
 }
 
@@ -125,14 +125,14 @@ textarea {
   min-height: 7rem;
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid var(--border);
-  border-radius: 0.5rem;
+  border-radius: 0;
   color: inherit;
   padding: 0.75rem;
 }
 
 .sketch-shell {
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
+  border-radius: 0;
   padding: 0.5rem;
   background: rgba(0, 0, 0, 0.25);
   margin-bottom: 1rem;
@@ -150,7 +150,7 @@ iframe {
 }
 
 .note {
-  color: #94a3b8;
+  color: #a0a0a0;
   font-size: 0.9rem;
 }
 
@@ -171,7 +171,7 @@ iframe {
   padding: 0.35rem 0.5rem;
   background: rgba(0, 0, 0, 0.35);
   border: 1px solid var(--border);
-  border-radius: 0.4rem;
+  border-radius: 0;
   color: inherit;
 }
 
@@ -179,14 +179,14 @@ footer {
   text-align: center;
   padding: 1rem;
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: #a0a0a0;
 }
 
 button.clear-btn {
   background: transparent;
   color: var(--accent);
   border: 1px solid var(--accent);
-  border-radius: 999px;
+  border-radius: 0;
   padding: 0.4rem 0.9rem;
   font-weight: bold;
   cursor: pointer;
