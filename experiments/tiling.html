@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tiling Tree · p5 Experiments</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <header>
+      <a class="nav-link" href="../index.html">← All sketches</a>
+      <h1>m-ary Tree Tiling</h1>
+      <p>Click tiles to split them into children.</p>
+    </header>
+    <main>
+      <section class="article">
+        <div class="sketch-shell">
+          <div id="tiling-host" class="sketch-host"></div>
+        </div>
+        <p class="note">Each split alternates orientation to keep things interesting.</p>
+      </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.1/lib/p5.min.js"></script>
+    <script>
+      const host = document.getElementById('tiling-host');
+      const PALETTE = [
+        '#FFBA08',
+        '#FAA307',
+        '#F48C06',
+        '#E85D04',
+        '#DC2F02',
+        '#D00000',
+        '#9D0208',
+        '#6A040F',
+        '#370617',
+        '#03071E',
+      ];
+
+      class Node {
+        constructor() {
+          this.parent = null;
+          this.children = [];
+          this.orientation = 'h';
+          this.x = 0;
+          this.y = 0;
+          this.w = 500;
+          this.h = 500;
+        }
+
+        add(node) {
+          node.parent = this;
+          this.children.push(node);
+          this.layout();
+        }
+
+        layout() {
+          this.children.forEach((child, index) => {
+            if (this.orientation === 'h') {
+              const childWidth = this.w / this.children.length;
+              child.x = this.x + childWidth * index;
+              child.y = this.y;
+              child.w = childWidth;
+              child.h = this.h;
+            } else {
+              const childHeight = this.h / this.children.length;
+              child.x = this.x;
+              child.y = this.y + childHeight * index;
+              child.w = this.w;
+              child.h = childHeight;
+            }
+          });
+        }
+
+        render(p) {
+          p.rect(this.x, this.y, this.w, this.h);
+          this.children.forEach((child, index) => {
+            p.fill(PALETTE[index % PALETTE.length]);
+            child.render(p);
+          });
+        }
+
+        find(x, y) {
+          if (this.children.length === 0) return this;
+          for (const child of this.children) {
+            if (
+              x >= child.x &&
+              x <= child.x + child.w &&
+              y >= child.y &&
+              y <= child.y + child.h
+            ) {
+              return child.find(x, y);
+            }
+          }
+          return this;
+        }
+      }
+
+      const sketch = (s) => {
+        let root;
+
+        const initTree = () => {
+          root = new Node();
+          for (let i = 0; i < 5; i++) root.add(new Node());
+
+          root.children[0].orientation = 'v';
+          for (let i = 0; i < 3; i++) root.children[0].add(new Node());
+
+          root.children[0].children[2].orientation = 'v';
+          for (let i = 0; i < 4; i++) root.children[0].children[2].add(new Node());
+
+          root.children[1].orientation = 'v';
+          for (let i = 0; i < 3; i++) root.children[1].add(new Node());
+          for (let i = 0; i < 9; i++) root.children[1].children[0].add(new Node());
+
+          root.children[3].orientation = 'v';
+          for (let i = 0; i < 3; i++) root.children[3].add(new Node());
+          root.children[3].children[2].orientation = 'v';
+          for (let i = 0; i < 9; i++) root.children[3].children[2].add(new Node());
+        };
+
+        s.setup = () => {
+          host.textContent = '';
+          const canvas = s.createCanvas(500, 500);
+          canvas.parent(host);
+          s.noLoop();
+          s.stroke('#ffffff');
+          s.strokeWeight(2);
+          s.noFill();
+          initTree();
+          root.render(s);
+        };
+
+        s.mouseClicked = () => {
+          const node = root.find(s.mouseX, s.mouseY);
+          if (!node) return;
+          node.add(new Node());
+          node.add(new Node());
+          node.render(s);
+        };
+      };
+
+      new p5(sketch);
+    </script>
+  </body>
+</html>

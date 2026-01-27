@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trig Waves · p5 Experiments</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <header>
+      <a class="nav-link" href="../index.html">← All sketches</a>
+      <h1>Trigonometry Waves</h1>
+      <p>
+        Adjust amplitude, wavelength, and diameter to watch sine, cosine, and
+        tangent orbits animate.
+      </p>
+    </header>
+    <main>
+      <section class="article">
+        <div class="controls-grid">
+          <label>
+            Amplitude
+            <input type="number" id="amplitude" min="10" max="200" value="75" />
+          </label>
+          <label>
+            Wavelength (λ)
+            <input type="number" id="lambda" min="60" max="400" value="266" />
+          </label>
+          <label>
+            Diameter
+            <input type="number" id="diameter" min="5" max="60" value="15" />
+          </label>
+        </div>
+        <div class="sketch-shell">
+          <p>sin(x)</p>
+          <div id="sin-host" class="sketch-host"></div>
+        </div>
+        <div class="sketch-shell">
+          <p>cos(x)</p>
+          <div id="cos-host" class="sketch-host"></div>
+        </div>
+        <div class="sketch-shell">
+          <p>tan(x)</p>
+          <div id="tan-host" class="sketch-host"></div>
+        </div>
+        <p class="note">Click a canvas to clear previous trails.</p>
+      </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.1/lib/p5.min.js"></script>
+    <script>
+      const config = {
+        amplitude: 75,
+        lambda: 266,
+        diameter: 15,
+      };
+
+      const controls = ['amplitude', 'lambda', 'diameter'];
+      const hostIds = [
+        { id: 'sin-host', type: 'sin' },
+        { id: 'cos-host', type: 'cos' },
+        { id: 'tan-host', type: 'tan' },
+      ];
+
+      const metas = [];
+
+      const createWave = ({ id, type }) => {
+        const host = document.getElementById(id);
+        const meta = { reset: () => {} };
+
+        const sketch = (s) => {
+          let width = host.clientWidth || 600;
+          let height = host.clientHeight || 260;
+          let x = -config.diameter;
+
+          const setSize = () => {
+            width = host.clientWidth || width;
+            height = host.clientHeight || height;
+          };
+
+          const reset = () => {
+            x = -config.diameter;
+            s.clear();
+          };
+
+          meta.reset = reset;
+
+          s.setup = () => {
+            host.textContent = '';
+            setSize();
+            const canvas = s.createCanvas(width, height);
+            canvas.parent(host);
+          };
+
+          s.windowResized = () => {
+            setSize();
+            s.resizeCanvas(width, height);
+          };
+
+          s.draw = () => {
+            let y = height / 2;
+            const angle = (s.TWO_PI / config.lambda) * x;
+            if (type === 'sin') {
+              y = config.amplitude * s.sin(angle) + height / 2;
+            } else if (type === 'cos') {
+              y = config.amplitude * s.cos(angle) + height / 2;
+            } else if (type === 'tan') {
+              y = config.amplitude * s.tan(angle) + height / 2;
+            }
+
+            const r = Math.round(
+              s.map(
+                y,
+                -config.amplitude + height / 2,
+                config.amplitude + height / 2,
+                0,
+                255,
+              ),
+            );
+
+            x = x >= width + config.diameter ? -config.diameter : x + 1;
+
+            s.noStroke();
+            s.fill(r, 100, 125);
+            s.ellipse(x, y, config.diameter, config.diameter);
+          };
+
+          s.mousePressed = () => {
+            reset();
+          };
+        };
+
+        metas.push(meta);
+        new p5(sketch);
+      };
+
+      hostIds.forEach(createWave);
+
+      controls.forEach((key) => {
+        const input = document.getElementById(key);
+        input.addEventListener('input', (event) => {
+          const value = Number(event.target.value);
+          config[key] = Number.isFinite(value) ? value : config[key];
+          metas.forEach((meta) => meta.reset());
+        });
+      });
+    </script>
+  </body>
+</html>

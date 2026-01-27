@@ -1,0 +1,204 @@
+:root {
+  color-scheme: dark;
+  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace;
+  --bg: #03071e;
+  --bg-alt: #0f172a;
+  --text: #f8fafc;
+  --accent: #f48c06;
+  --border: rgba(255,255,255,0.2);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: linear-gradient(180deg, #0b1120 0%, #03071e 100%);
+  color: var(--text);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+main {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 1rem;
+  flex: 1;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+a.card {
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.8);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+a.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.card p {
+  margin: 0;
+  color: #cbd5f5;
+  font-size: 0.9rem;
+}
+
+.nav-link {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+section.article {
+  background: rgba(15, 23, 42, 0.85);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+}
+
+section.article h2 {
+  margin-top: 0;
+}
+
+.control-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.control-panel label,
+.control-panel input,
+.control-panel textarea {
+  width: 100%;
+}
+
+.control {
+  flex: 1;
+  min-width: 200px;
+}
+
+.control input[type="range"] {
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+  min-height: 7rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  color: inherit;
+  padding: 0.75rem;
+}
+
+.sketch-shell {
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.25);
+  margin-bottom: 1rem;
+}
+
+.sketch-host {
+  width: 100%;
+  height: 360px;
+}
+
+iframe {
+  width: 100%;
+  border: none;
+  min-height: 500px;
+}
+
+.note {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.controls-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+}
+
+.controls-grid input {
+  padding: 0.35rem 0.5rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  color: inherit;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+button.clear-btn {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button.clear-btn:hover {
+  background: rgba(244, 140, 6, 0.15);
+}
+
+@media (max-width: 640px) {
+  .sketch-host {
+    height: 260px;
+  }
+}

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mountains · p5 Experiments</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <header>
+      <a class="nav-link" href="../index.html">← All sketches</a>
+      <h1>Perlin Mountain Palette</h1>
+      <p>Click the canvas (or tap) to regenerate the layered waves.</p>
+    </header>
+    <main>
+      <section class="article">
+        <div class="sketch-shell">
+          <div id="mountains-host" class="sketch-host"></div>
+        </div>
+        <p class="note">
+          Palette based on twilight oranges. Each layer shares the same noise
+          seed but shifts its vertical range for depth.
+        </p>
+      </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.1/lib/p5.min.js"></script>
+    <script>
+      const host = document.getElementById('mountains-host');
+      const COLORS = [
+        '#FFBA08',
+        '#FAA307',
+        '#F48C06',
+        '#E85D04',
+        '#DC2F02',
+        '#D00000',
+        '#9D0208',
+        '#6A040F',
+        '#370617',
+        '#03071E',
+      ];
+
+      const sketch = (s) => {
+        let canvas;
+        let width = 640;
+        let height = 360;
+
+        const setSize = () => {
+          width = host.clientWidth || width;
+          height = host.clientHeight || height;
+        };
+
+        const drawWave = (opts) => {
+          s.fill(opts.color);
+          s.beginShape();
+          let xoff = 1.0;
+          for (let x = 0; x <= width; x += 10) {
+            const y = s.map(
+              s.noise(xoff, opts.yoff),
+              0,
+              1,
+              opts.min * height,
+              opts.max * height,
+            );
+            s.curveVertex(x, y);
+            xoff += s.random(0.5);
+          }
+          opts.yoff += s.random(-0.5, 0.5);
+          s.curveVertex(width, height);
+          s.curveVertex(0, height);
+          s.endShape(s.CLOSE);
+        };
+
+        const drawScene = () => {
+          const waves = [
+            { color: COLORS[1], min: 0, max: 0.2, yoff: 2 },
+            { color: COLORS[2], min: 0.2, max: 0.4, yoff: 2 },
+            { color: COLORS[3], min: 0.4, max: 0.6, yoff: 2 },
+            { color: COLORS[4], min: 0.6, max: 0.8, yoff: 2 },
+            { color: COLORS[5], min: 0.8, max: 1.0, yoff: 2 },
+          ];
+
+          s.clear();
+          s.background(COLORS[0]);
+          waves.forEach(drawWave);
+        };
+
+        s.setup = () => {
+          host.textContent = '';
+          setSize();
+          canvas = s.createCanvas(width, height);
+          canvas.parent(host);
+          s.frameRate(5);
+          s.stroke('#ffffff');
+          s.strokeWeight(3);
+          s.noLoop();
+          drawScene();
+        };
+
+        s.windowResized = () => {
+          setSize();
+          s.resizeCanvas(width, height);
+          drawScene();
+        };
+
+        s.mousePressed = () => {
+          drawScene();
+        };
+      };
+
+      new p5(sketch);
+    </script>
+  </body>
+</html>

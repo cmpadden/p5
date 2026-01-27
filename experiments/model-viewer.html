@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>STL Model Viewer · p5 Experiments</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <header>
+      <a class="nav-link" href="../index.html">← All sketches</a>
+      <h1>STL Model Viewer</h1>
+      <p>Orbit control enabled. Click to pause auto-rotation.</p>
+    </header>
+    <main>
+      <section class="article">
+        <div class="sketch-shell">
+          <div id="model-host" class="sketch-host" style="height: 420px"></div>
+        </div>
+        <p class="note" id="model-label"></p>
+      </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.1/lib/p5.min.js"></script>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const fallbackModel = '../models/mac_mini_macbook_stand.stl';
+      const resolvePath = (value) => {
+        if (!value) return fallbackModel;
+        if (/^https?:/i.test(value)) return value;
+        if (value.startsWith('/')) return value;
+        if (value.startsWith('../') || value.startsWith('./')) return value;
+        return `../${value}`;
+      };
+
+      const modelPath = resolvePath(params.get('path'));
+      const background = Number(params.get('bg') ?? 100);
+      document.getElementById('model-label').textContent = `model: ${modelPath}`;
+
+      const host = document.getElementById('model-host');
+
+      const sketch = (s) => {
+        let model;
+        let angle = 0;
+        let autoRotate = true;
+
+        const size = () => ({
+          width: host.clientWidth || 640,
+          height: host.clientHeight || 420,
+        });
+
+        s.preload = () => {
+          model = s.loadModel(modelPath, true);
+        };
+
+        s.setup = () => {
+          host.textContent = '';
+          const { width, height } = size();
+          const canvas = s.createCanvas(width, height, s.WEBGL);
+          canvas.parent(host);
+        };
+
+        s.windowResized = () => {
+          const { width, height } = size();
+          s.resizeCanvas(width, height);
+        };
+
+        s.mouseClicked = () => {
+          autoRotate = false;
+        };
+
+        s.draw = () => {
+          s.background(background);
+          s.lights();
+          if (autoRotate) {
+            angle = s.frameCount * 0.005;
+          }
+          s.rotateX(angle);
+          s.rotateY(angle);
+          s.orbitControl();
+          if (model) {
+            s.model(model);
+          }
+        };
+      };
+
+      new p5(sketch);
+    </script>
+  </body>
+</html>
