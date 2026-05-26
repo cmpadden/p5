@@ -216,6 +216,19 @@ body.embed .sketch-host {
   height: min(70vh, 520px) !important;
 }
 
+body.embed.mountains-page .sketch-host,
+body.embed.tiling-page .sketch-host {
+  height: 360px !important;
+}
+
+body.embed.variance-page .sketch-host {
+  height: 520px !important;
+}
+
+body.embed.waves-page .sketch-host {
+  height: 240px !important;
+}
+
 body.embed .controls-grid {
   margin-bottom: 1rem;
 }
@@ -242,5 +255,12 @@ button.clear-btn:hover {
 
   body.embed .sketch-host {
     height: min(70vh, 360px) !important;
+  }
+
+  body.embed.mountains-page .sketch-host,
+  body.embed.tiling-page .sketch-host,
+  body.embed.variance-page .sketch-host,
+  body.embed.waves-page .sketch-host {
+    height: 260px !important;
   }
 }
