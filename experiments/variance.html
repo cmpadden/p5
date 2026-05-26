@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="../styles.css" />
   </head>
   <body>
+    <script>
+      document.body.classList.toggle(
+        'embed',
+        new URLSearchParams(window.location.search).has('embed'),
+      );
+    </script>
     <header>
       <a class="nav-link" href="../index.html">← All sketches</a>
       <h1>Variance Palette</h1>

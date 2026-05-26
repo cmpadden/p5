@@ -182,6 +182,44 @@ footer {
   color: #a0a0a0;
 }
 
+body.embed {
+  min-height: 0;
+  background: transparent;
+}
+
+body.embed header,
+body.embed footer,
+body.embed .note {
+  display: none;
+}
+
+body.embed main {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body.embed section.article {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+body.embed .sketch-shell {
+  border: 0;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+body.embed .sketch-host {
+  height: min(70vh, 520px) !important;
+}
+
+body.embed .controls-grid {
+  margin-bottom: 1rem;
+}
+
 button.clear-btn {
   background: transparent;
   color: var(--accent);
@@ -200,5 +238,9 @@ button.clear-btn:hover {
 @media (max-width: 640px) {
   .sketch-host {
     height: 260px;
+  }
+
+  body.embed .sketch-host {
+    height: min(70vh, 360px) !important;
   }
 }
